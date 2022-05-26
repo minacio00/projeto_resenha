@@ -1,0 +1,22 @@
+<img src="detalhes_cabeca.png" width="191" height="501" border="0" usemap="#map"/>
+
+<map name="map">
+<!-- #$-:ImagemapfilecreatedbyGIMPImageMapplug-in-->
+<!-- #$-:GIMPImageMapplug-inbyMauritsRijk-->
+<!-- #$-:Pleasedonoteditlinesstartingwith"#$"-->
+<!-- #$VERSION:2.3-->
+<!-- #$AUTHOR:Welder-->
+<area shape="poly"coords="46,391,93,389,96,398,94,495,66,495,41,470,38,462,69,468,60,428,61,420,48,422,42,418,45,457,38,457,34,418" href="narinaDireita"/>
+<area shape="poly"coords="99,389,99,495,126,494,137,486,147,472,146,471,151,464,115,468,121,457,127,432,133,423,147,421,144,445,144,459,153,459,155,419,145,405,142,387"href="focinhoEsquerdo"/>
+<area shape="poly"coords="65,465,47,462,45,423,56,426" href="narinaDirieta"/>
+<area shape="poly"coords="132,427,144,425,139,463,122,465" href="narinaEsquerda"/>
+<area shape="poly"coords="95,174,95,385,46,388,36,313,5,184,21,184,29,177,36,175" href="chanfroDireito"/>
+<area shape="poly"coords="100,174,156,173,175,185,183,184,144,386,100,386" href="chanfroEsquerdo"/>
+<area shape="poly"coords="27,125,30,108,60,81,83,62,94,61,97,67,96,167,92,170,32,171,33,160,22,158,15,156" href="fronteDireita"/>
+<area shape="poly"coords="99,61,112,61,128,77,137,83,158,110,161,120,164,134,178,157,164,156,161,169,148,169,100,170" href="fronteEsquerda"/>
+<area shape="poly"coords="12,161,28,161,28,173,20,180,7,179" href="olhoDireito"/>
+<area shape="poly"coords="165,161,182,160,187,178,173,180,163,173" href="olhoEsquerdo"/>
+<area shape="poly"coords="27,109,19,76,19,41,31,3,41,2,57,43,60,78" href="orelhaDireira"/>
+<area shape="poly"coords="133,75,136,45,145,29,153,4,165,2,176,46,175,62,173,84,163,111" href="orelhaEsquerda"/>
+
+</map>
