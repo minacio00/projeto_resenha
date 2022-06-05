@@ -1,13 +1,19 @@
 import './App.css';
 import React from 'react';
-import ImgMap from './components/ImgMap';
+import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import Login from "./pages/login"
+import ImgMap from './components/ImgMap';
 
 function App() {
   return (
     <div className="App">
-        {/* <ImgMap/> */}
-        <Login/>
+       <BrowserRouter>
+       <Routes>
+        <Route path= '/' element={<Login/>} /> 
+        <Route path='/im' element={<ImgMap/>} /> 
+       </Routes>
+        
+       </BrowserRouter>
     </div>
   );
 }
