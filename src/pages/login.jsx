@@ -1,11 +1,17 @@
 import { useState } from "react";
 import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut} from "firebase/auth"
 import {auth} from '../firebase-config';
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
+    //a conta teste foi bloqueada no firebase, trocar a senha
+    /*TODO: quando clicar no botão sem inserir usuario
+    e senha rendenizar mensagem pedindo para preencher os campos */
     const [loginUser, setLoginUser] = useState();
     const [user, setUser] = useState({});
     const [password, setPassword] = useState();
+    const navigate = useNavigate();
 
 
     onAuthStateChanged(auth,(currentUser) => {
@@ -13,13 +19,25 @@ const Login = () => {
     })
 
     const signin = async(e) => {
+        //TODO: mover checagem de preenchimento dos campos para antes da promisse.
         e.preventDefault();
         console.log(auth)
         try {
-           const user = await signInWithEmailAndPassword(auth,loginUser,password.toString())    
+           const user = await signInWithEmailAndPassword(auth,loginUser,password) 
+           navigate("/controle", {replace: true});
         } catch (e) {
-            console.log(e)
-            console.log(user,password)
+            console.log(e);
+            // if (e.message === 'password is undefined'){ // o erro retornado pelo firebase mudou
+            //     alert("Insira uma senha");
+            // }
+            if (e.message === 'Firebase: Error (auth/missing-email).'){
+                alert("Insira um email");
+            }else { // o erro retornado pelo firebase mudou
+                alert(e);
+            }
+            // if (e.message === 'Firebase: Error (auth/missing-email).'){
+            //     alert("Insira um email");
+            // }
         }
         
     }

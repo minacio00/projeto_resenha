@@ -1,0 +1,17 @@
+<img src="pescoco_inferior.png" width="167" height="500" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Welder -->
+<area shape="poly" coords="10,488,10,446,6,435,9,415,14,375,29,323,39,318,48,300,58,195,61,157,54,147,52,119,57,93,64,57,67,32,69,17,75,3,89,4,98,10,102,24,103,49,104,60,117,107,116,140,107,158,113,235,118,279,128,318,138,336,148,355,154,383,156,407,159,423,158,455,158,489,97,489,47,490,11,491" href="pescocoVistaInferior" />
+<area shape="poly" coords="19,369,26,412,50,426,61,456,61,462,53,483,51,493,10,493,8,450,7,425,12,393,17,368" href="antebracoEsquerdo" />
+<area shape="poly" coords="149,364,143,396,138,409,117,429,106,449,108,460,117,490,158,489,157,452,161,432,154,395,151,366" href="antebracoDireito" />
+<area shape="poly" coords="62,461,108,460,108,443,123,422,137,412,144,398,149,361,147,355,143,343,133,326,100,349,75,349,57,342,35,321,17,357,23,401,28,410,50,426,59,437,63,457" href="peito" />
+<area shape="poly" coords="37,320,55,343,78,351,100,350,133,328,120,296,111,205,108,157,60,159,52,246,51,285,37,318,33,323,38,320" href="pescoco" />
+<area shape="poly" coords="60,157,53,117,59,75,69,36,74,10,79,5,100,12,103,44,110,86,119,115,119,142,110,157" href="cabecaVistaInferior" />
+<area shape="poly" coords="71,151,71,184,96,185,96,150" href="garganta" />
+<area shape="poly" coords="71,12,72,23,102,23,98,10,83,6" href="mento" />
+</map>

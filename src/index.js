@@ -10,6 +10,7 @@ const renderReactDOM = ()=>{
 
 if(window.cordova){
   document.addEventListener('deviceready',()=>{
+    console.log(navigator.notification);
     renderReactDOM();
   },false)
 } else {
