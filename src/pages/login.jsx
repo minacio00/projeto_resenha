@@ -19,25 +19,17 @@ const Login = () => {
     })
 
     const signin = async(e) => {
-        //TODO: mover checagem de preenchimento dos campos para antes da promisse.
+        //DONE: TODO: mover checagem de preenchimento dos campos para antes da promisse.
         e.preventDefault();
-        console.log(auth)
         try {
-           const user = await signInWithEmailAndPassword(auth,loginUser,password) 
+           if(loginUser == null){ alert("insira um email"); return}
+           else if (password == null) {alert("insira uma senha"); return}
+
+           const user = await signInWithEmailAndPassword(auth,loginUser,password);
            navigate("/controle", {replace: true});
         } catch (e) {
             console.log(e);
-            // if (e.message === 'password is undefined'){ // o erro retornado pelo firebase mudou
-            //     alert("Insira uma senha");
-            // }
-            if (e.message === 'Firebase: Error (auth/missing-email).'){
-                alert("Insira um email");
-            }else { // o erro retornado pelo firebase mudou
-                alert(e);
-            }
-            // if (e.message === 'Firebase: Error (auth/missing-email).'){
-            //     alert("Insira um email");
-            // }
+            alert(e);
         }
         
     }

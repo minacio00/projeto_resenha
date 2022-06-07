@@ -3,7 +3,7 @@ const ControleResenha = () => {
 
     return (
         <div className="flex-col space-y-8">
-            <header className="bg-blue-600 h-12 p-3 indent-10
+            <header className="bg-indigo-600 h-12 p-3 indent-10
             text-white font-bold text-left">
                 Controle de Resenha
             </header>
