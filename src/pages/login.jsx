@@ -13,6 +13,9 @@ const Login = () => {
     const [password, setPassword] = useState();
     const navigate = useNavigate();
 
+    if(user?.email){
+        navigate('/controle', {replace: true})
+    }
 
     onAuthStateChanged(auth,(currentUser) => {
         setUser(currentUser);
@@ -26,7 +29,7 @@ const Login = () => {
            else if (password == null) {alert("insira uma senha"); return}
 
            const user = await signInWithEmailAndPassword(auth,loginUser,password);
-           navigate("/controle", {replace: true});
+           navigate("/controle", {replace: false});
         } catch (e) {
             console.log(e);
             alert(e);

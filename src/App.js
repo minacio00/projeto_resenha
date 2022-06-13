@@ -4,6 +4,8 @@ import {Route, Routes, BrowserRouter, HashRouter} from 'react-router-dom';
 import Login from "./pages/login"
 import ImgMap from './components/ImgMap';
 import ControleResenha from './pages/controleResenha';
+import Proprietario from './pages/Proprietario';
+import Equideo from './pages/Equideo';
 
 function App() {
   function alertDismissed() {
@@ -14,9 +16,11 @@ function App() {
       {/* <BrowserRouter> */}
        <HashRouter>
         <Routes>
-          <Route path= '/' element={<Login/>} /> 
           <Route path='/im' element={<ImgMap/>} /> 
           <Route path='/controle' element={<ControleResenha/>} />
+          <Route path='proprietario' element={<Proprietario/>} />
+          <Route path='equideo' element={<Equideo/>}/>
+          <Route path='/'  element={<Login/>} /> 
         </Routes>
        </HashRouter>
        {/* </BrowserRouter> */}

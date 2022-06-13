@@ -1,17 +1,20 @@
 import { useEffect, useState, useRef } from "react";
-import { ArrowLeftIcon, MenuIcon, UserAddIcon,
+import { ArrowLeftIcon, MenuIcon, UserAddIcon, DocumentAddIcon,
     UserIcon, HomeIcon, CogIcon, QuestionMarkCircleIcon, LogoutIcon
 }
  from "@heroicons/react/solid";
+import { useNavigate,Link } from "react-router-dom";
 
 
 export const Sidebar = () => {
+   const navigate = useNavigate();
    const [hidden, setHidden] = useState(true)
    // // useEffect(() => {
    // //   setHidden(!isHidden)
    // // }, [isHidden])
    const handleClick = ()=>{
       setHidden(!hidden)
+     
       // alert(hidden)
    }
    function useOutsideAlerter(ref) {
@@ -48,15 +51,19 @@ export const Sidebar = () => {
                   <ArrowLeftIcon className=" mb-4 w-5 h-5 hover:cursor-pointer hover:bg-gray-100" onClick={handleClick}/>
                   <ul className="list-reset flex flex-col text-center" >
                      <div className="flex pb-4 hover:bg-gray-100">
-                        <li className="mr-3 flex-1 text-left">
-                           <a href="/controle" className=" block py-1 md:py-3 pl-1 align-middle text-grey-darkest no-underline "
-                           >
-                           <i className="fas fa-link pr-0 md:pr-3"></i>
-                           <span className=" pb-1 text-sm md:text-base text-grey-dark block">Cadastro Proprietário </span>
-                           
-                           </a>
-                        </li>
-                        <UserAddIcon className="w-5 h-5"/>
+                        
+                           <li className="mr-3 flex-1 text-left">
+                              <Link to={'/proprietario'}>
+                                 <span className=" block py-1 md:py-3 pl-1 align-middle text-grey-darkest no-underline "
+                                 >
+                                 <i className="fas fa-link pr-0 md:pr-3"></i>
+                                 <span className=" pb-1 text-sm md:text-base text-grey-dark block">Cadastro Proprietário </span>
+                                 
+                                 </span>
+                              </Link>
+                           </li>
+                           <UserAddIcon className="w-5 h-5"/>
+                        
                      </div>
                      <div className="flex pb-4 hover:bg-gray-100">
                         <li className="mr-3 flex-1 text-left">
@@ -71,14 +78,16 @@ export const Sidebar = () => {
                      </div>
                      <div className="flex pb-4 hover:bg-gray-100">
                         <li className="mr-3 flex-1 text-left">
-                           <a href="/controle" className="block py-1 md:py-3 pl-1 align-middle text-grey-darkest no-underline "
-                           >
-                           <i className="fas fa-link pr-0 md:pr-3"></i>
-                           <span className="pb-1 text-sm md:text-base text-grey-dark block">Cadastro Equino </span>
-                           
-                           </a>
+                           <Link to={"/equideo"}>
+                              <span className="block py-1 md:py-3 pl-1 align-middle text-grey-darkest no-underline "
+                              >
+                              <i className="fas fa-link pr-0 md:pr-3"></i>
+                              <span className="pb-1 text-sm md:text-base text-grey-dark block">Cadastro Equino </span>
+                              
+                              </span>
+                           </Link>
                         </li>
-                        <UserAddIcon className="w-5 h-5"/>
+                        <DocumentAddIcon className="w-5 h-5"/>
                      </div>
                      <div className="flex pb-4 hover:bg-gray-100">
                         <li className="mr-3 flex-1 text-left">
