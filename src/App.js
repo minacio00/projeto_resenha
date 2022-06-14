@@ -6,6 +6,8 @@ import ImgMap from './components/ImgMap';
 import ControleResenha from './pages/controleResenha';
 import Proprietario from './pages/Proprietario';
 import Equideo from './pages/Equideo';
+import { Cabeca } from './pages/Cabeca';
+import { LadoEsquerdo } from './pages/LadoEsquerdo';
 
 function App() {
   function alertDismissed() {
@@ -20,6 +22,8 @@ function App() {
           <Route path='/controle' element={<ControleResenha/>} />
           <Route path='proprietario' element={<Proprietario/>} />
           <Route path='equideo' element={<Equideo/>}/>
+          <Route path='cabeca' element={<Cabeca/>}/>
+          <Route path='esquerdo' element={<LadoEsquerdo/>}/>
           <Route path='/'  element={<Login/>} /> 
         </Routes>
        </HashRouter>
