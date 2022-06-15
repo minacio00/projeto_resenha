@@ -1,12 +1,23 @@
 import {PencilIcon, TrashIcon,MenuIcon} from '@heroicons/react/solid';
 import { useEffect, useState } from 'react';
 import {Sidebar} from "../components/Sidebar";
+import {onAuthStateChanged, signOut} from "firebase/auth"
+import {auth} from '../firebase-config';
 const ControleResenha = () => {
     // const [isOpen, setIsOpen] = useState(false);
     // const toggle = () => {
     //     // alert(isOpen);
     //     setIsOpen(!isOpen);
     // };
+    const LogOut = async() => {
+        try {
+            if(auth.currentUser){
+                await signOut(auth);
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     return (
         <div className="flex-col space-y-6"> 
@@ -20,6 +31,11 @@ const ControleResenha = () => {
                 </div>
             </header>
             <body className="space-y-6">
+            <a className="font-medium text-indigo-600 hover:text-indigo-500"
+                onClick={() => LogOut()}>
+                    {auth.currentUser.email} <br />
+                    log out
+                </a>
                 <div className="flex items-center justify-center space-x-4 px-1">
                     <p className="w-20">Proprietário</p>
                     <select className="overflow-hidden w-80 border-0 rounded-md bg-gray-100">

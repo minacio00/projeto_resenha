@@ -3,8 +3,7 @@ import { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon, TrashIcon, PlusIcon } from "@heroicons/react/solid"
 
-export const Cabeca = ({hidden}) => {
-    const [isHidden, setisHidden] = useState(hidden)
+export const MembrosAnteriores = () => {
     const navigate = useNavigate();
 //     function mapResizer(maps) {
 //         if (!maps) {maps = document.getElementsByTagName('map');}
@@ -28,26 +27,15 @@ export const Cabeca = ({hidden}) => {
 //     }
 //    mapResizer()
    
-
-   const handleClick = (e)=>{
-        e.preventDefault();
-        setisHidden(!isHidden)
-        // alert(hidden)
-    }
-    const saveMarks = (e) => {
-        // salva marcaçoes no banco
-        e.preventDefault();
-        navigate("/geral",{replace:false})
-    }
     // resize(191);
     return (
         <>
             <header className=" flex-col space-y-6 bg-indigo-600 h-12 indent-10
                     text-white font-bold text-left">
                         <div className='flex'>
-                            <Link to={'/geral'}>
-                                <ArrowLeftIcon className="w-6 h-6 m-3 hover:cursor-pointer" />
-                            </Link>
+                            
+                                <ArrowLeftIcon className="w-6 h-6 m-3 hover:cursor-pointer" on onClick={(e) =>{navigate('/geral',{replace: true})}} />
+                            
                             <span className='p-3'>
                                 Dados do equídeo
                             </span>
@@ -55,20 +43,26 @@ export const Cabeca = ({hidden}) => {
             </header>
             <section className="flex-col space-y-4">
                 <div>
-                    <img className={"mx-auto"} src="detalhes_cabeca.png" alt="visaoGeral" useMap="#map_cabeca" width="191" height="501" />
-                    <map name="map_cabeca">
-                        <area shape="poly" onClick={handleClick} coords="46,391,93,389,96,398,94,495,66,495,41,470,38,462,69,468,60,428,61,420,48,422,42,418,45,457,38,457,34,418" href="focinhoDireito" />
-                        <area shape="poly" onClick={handleClick} coords="99,389,99,495,126,494,137,486,147,472,146,471,151,464,115,468,121,457,127,432,133,423,147,421,144,445,144,459,153,459,155,419,145,405,142,387" href="focinhoEsquerdo" />
-                        <area shape="poly" onClick={handleClick} coords="65,465,47,462,45,423,56,426" href="narinaDireita" />
-                        <area shape="poly" onClick={handleClick} coords="132,427,144,425,139,463,122,465" href="narinaEsquerda" />
-                        <area shape="poly" onClick={handleClick} coords="95,174,95,385,46,388,36,313,5,184,21,184,29,177,36,175" href="chanfroDireito" />
-                        <area shape="poly" onClick={handleClick} coords="100,174,156,173,175,185,183,184,144,386,100,386" href="chanfroEsquerdo" />
-                        <area shape="poly" onClick={handleClick} coords="27,125,30,108,60,81,83,62,94,61,97,67,96,167,92,170,32,171,33,160,22,158,15,156" href="fronteDireita" />
-                        <area shape="poly" onClick={handleClick} coords="99,61,112,61,128,77,137,83,158,110,161,120,164,134,178,157,164,156,161,169,148,169,100,170" href="fronteEsquerda" />
-                        <area shape="poly" onClick={handleClick} coords="12,161,28,161,28,173,20,180,7,179" href="olhoDireito" />
-                        <area shape="poly" onClick={handleClick} coords="165,161,182,160,187,178,173,180,163,173" href="olhoEsquerdo" />
-                        <area shape="poly" onClick={handleClick} coords="27,109,19,76,19,41,31,3,41,2,57,43,60,78" href="orelhaDireira" />
-                        <area shape="poly" onClick={handleClick} coords="133,75,136,45,145,29,153,4,165,2,176,46,175,62,173,84,163,111" href="orelhaEsquerda" />
+                    <img className={"mx-auto"} src="membros_anteriores.png" alt="Membros_anteriores" useMap="#map_anteriores" width="281" height="500" />
+                    <map name="map_anteriores">
+                        <area shape="poly" coords="45,199,33,220,33,248,43,280,52,297,53,300,78,285,93,249,95,214,85,198,50,196" href="joelhoEsquerdo" />
+                        <area shape="poly" coords="189,195,180,217,180,244,187,282,195,292,215,293,232,274,242,236,232,201,227,196,190,195" href="joelhoDireito" />
+                        <area shape="poly" coords="53,300,53,378,79,379,79,285" href="canelaEsquerdo" />
+                        <area shape="poly" coords="195,292,195,377,217,379,216,324,216,292" href="canelaEsquerdo" />
+                        <area shape="poly" coords="54,378,46,391,49,419,55,428,85,425,92,398,89,387,78,379" href="boletoEsquerdo" />
+                        <area shape="poly" coords="54,426,56,437,88,437,84,424" href="machinhoEsquerdo" />
+                        <area shape="poly" coords="54,436,42,444,68,457,97,450,86,436,85,436" href="quartelaEsquerdo" />
+                        <area shape="poly" coords="48,446,36,450,52,464,69,465,84,464,105,453,101,449,72,456" href="coroaEsquerdo" />
+                        <area shape="poly" coords="37,451,37,479,63,488,107,482,105,458,72,467,49,461,42,454" href="casco" />
+                        <area shape="poly" coords="195,379,184,402,186,419,193,423,213,424,221,411,224,395,219,379" href="boletoDireito" />
+                        <area shape="poly" coords="191,422,190,434,216,436,217,424" href="machinhoDireito" />
+                        <area shape="poly" coords="190,433,181,446,179,448,201,454,226,453,216,437" href="quartelaDireito" />
+                        <area shape="poly" coords="181,449,170,457,183,467,203,469,226,464,231,458,229,453,203,455" href="coroaDireito" />
+                        <area shape="poly" coords="167,459,168,479,183,488,208,490,235,481,234,476,234,456,225,463,209,469,193,469,175,461" href="casco" />
+                        <area shape="poly" coords="12,15,20,69,28,111,46,164,48,195,84,197,84,153,98,128,101,84,125,45,135,39,135,13,14,15" href="antebracoEsquerdo" />
+                        <area shape="poly" coords="187,194,227,195,251,87,269,10,135,14,136,40,161,56,175,89,179,126,187,157,190,193" href="antebracoDireito" />
+                        <area shape="poly" coords="195,167,196,185,207,185,204,169,199,169" href="castanha" />
+                        <area shape="poly" coords="67,170,70,187,79,187,77,169,68,168" href="castanha" />
                     </map>
                 </div>
                 <div>
@@ -103,7 +97,7 @@ export const Cabeca = ({hidden}) => {
                         font-medium rounded-md bg-indigo-600 text-white
                         hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         // type="submit"
-                        onClick={ (e) => saveMarks(e) /* deve salvar no firebase daí voltar para equideo */}>
+                        onClick={ (e) => navigate('/geral',{replace: true}) /* deve salvar no firebase daí voltar para equideo */}>
                            Salvar marcações
                         </button>
                     </div>
@@ -111,4 +105,3 @@ export const Cabeca = ({hidden}) => {
         </>
     )
 }
-
