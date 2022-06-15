@@ -55,10 +55,10 @@ export const VisaoGeral = () => {
                     <area shape="poly" onClick={() => { navigate('/cabeca', { replace: false }) }} coords={coords[0]} href="detalhesCabeca" />
                     <area shape="poly" onClick={() => { navigate('/direito', { replace: false }) }} coords={coords[1]} href="ladoDireito" />
                     <area shape="poly" onClick={() => { navigate('/esquerdo', { replace: false }) }} coords={coords[2]} href="ladoEsquerdo" />
-                    <area shape="poly" onClick={clickVisaoGeral} coords={coords[3]} href="pescocoVistaInferior" />
+                    <area shape="poly" onClick={() => { navigate('/pescoco', { replace: false }) }} coords={coords[3]} href="pescocoVistaInferior" />
                     <area shape="poly" onClick={() => { navigate('/anteriores', { replace: false }) }} coords={coords[4]} href="membrosAnteriores" />
-                    <area shape="poly" onClick={clickVisaoGeral} coords={coords[5]} href="focinho" />
-                    <area shape="poly" onClick={clickVisaoGeral} coords={coords[6]} href="membrosPosteriores" />
+                    <area shape="poly" onClick={() => { navigate('/focinho', { replace: false }) }} coords={coords[5]} href="focinho" />
+                    <area shape="poly" onClick={() => { navigate('/posteriores', { replace: false }) }} coords={coords[6]} href="membrosPosteriores" />
                 </map>
 
             </div>

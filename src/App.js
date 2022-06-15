@@ -11,6 +11,9 @@ import { LadoEsquerdo } from './pages/LadoEsquerdo';
 import { VisaoGeral } from './pages/VisaoGeral';
 import { LadoDireito } from './pages/LadoDireito';
 import { MembrosAnteriores } from './pages/MembrosAnt';
+import { Pescoco } from './pages/Pescoco';
+import { Focinho } from './pages/Focinho';
+import { MembrosPost } from './pages/MembrosPost';
 
 function App() {
   function alertDismissed() {
@@ -30,6 +33,9 @@ function App() {
           <Route path='esquerdo' element={<LadoEsquerdo/>}/>
           <Route path='direito' element={<LadoDireito/>}/>
           <Route path='anteriores' element={<MembrosAnteriores/>}/>
+          <Route path='pescoco' element={<Pescoco/>}/>
+          <Route path='focinho' element={<Focinho/>}/>
+          <Route path='posteriores' element={<MembrosPost/>}/>
           <Route path='/'  element={<Login/>} /> 
         </Routes>
        </HashRouter>
