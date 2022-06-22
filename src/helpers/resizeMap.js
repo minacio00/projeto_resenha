@@ -1,7 +1,7 @@
 const resize = (w) => {
     window.onload = function () {
         var ImageMap = function () {
-            alert("alo")
+            // alert("alo")
                 var n,
                     areas = document.getElementsByTagName('area'),
                     len = areas.length,

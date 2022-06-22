@@ -1,6 +1,9 @@
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {auth, db} from "../firebase-config";
+import { addDoc, collection,doc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Proprietario = ()=> {
     const [nome, setNome] = useState("");
@@ -10,6 +13,26 @@ const Proprietario = ()=> {
     const [complemento, setComplemento] = useState("");
     const navigate = useNavigate();
 
+    onAuthStateChanged(auth,(currentUser) => {
+        // console.log(auth)
+        if(!currentUser){
+            navigate('/')
+        }
+        
+    })
+    const saveProprietario = async (e) => {
+        e.preventDefault();
+        const proprietariosRef = collection(db, "proprietarios");
+        const newDoc = addDoc(proprietariosRef, {
+            nome: nome,
+            telefone: phone,
+            Rua: rua,
+            Bairro: bairro,
+            Complemento: complemento,
+            vet: auth.currentUser.uid
+        });
+        navigate(-1);
+    }
 
     return(
         <>
@@ -25,46 +48,52 @@ const Proprietario = ()=> {
                     </div>
             </header>
             <body>
-                <form className="mt-8 space-y-6" method="post">
+                <form className="mt-8 space-y-6" onSubmit={(e) => saveProprietario(e)}>
                     <input type="hidden" name="remember" defaultValue={true} />
                     <div className="space-y-4 px-4">
                         <div>
-                            <input className="appearance-none rounded-md relative block w-full
+                            <input className="appearance-none valid:border-green-500  invalid:border-red-500 rounded-md relative block w-full
                              px-3 py-2 border-b border-gray-300 placeholder-gray-500 text-gray-900
                               rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Nome do Proprietario" name="login" id="nome"
+                            required
                             onChange={(e)=>setNome(e.target.value)} />
                         </div>
                         <div>
                             <input className=
-                            "appearance-none rounded-md relative block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Telefone"
+                            "appearance-none valid:border-green-500  invalid:border-red-500 rounded-md relative block w-full px-3 py-2 border-b border-t-0 border-x-0 border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            placeholder="Telefone (xx)xxxxx-xxxx"
                             name="Telefone"
                             id="Telefone"
-                            type='Telefone'
+                            type='tel'
+                            title="deve ter o formato (ddd)xxxxxxxxx"
+                            pattern="\([0-9]{2}\)[0-9]{9}"
+                            required
                             onChange={ (e) => setPhone(e.target.value) }/>
                         </div>
                         <div>
                             <input className=
-                            "appearance-none rounded-md relative block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            "appearance-none rounded-md valid:border-green-500  invalid:border-red-500 relative block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Rua"
                             name="Rua"
                             id="Rua"
+                            required
                             onChange={ (e) => setRua(e.target.value) }/>
                         </div>
                         <div>
                             <input className=
-                            "appearance-none rounded-md relative block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Telefone"
+                            "appearance-none rounded-md relative block w-full valid:border-green-500  invalid:border-red-500 px-3 py-2 border-b border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            placeholder="Bairro"
                             name="bairro"
                             id="bairro"
                             type='bairro'
+                            required
                             onChange={ (e) => setBairro(e.target.value) }/>
                         </div>
                         <div>
                             <input className=
                             "appearance-none rounded-md relative block w-full px-3 py-2 border-b border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Telefone"
+                            placeholder="Complemento"
                             name="Complemento"
                             id="Complemento"
                             type='Complemento'
@@ -72,13 +101,13 @@ const Proprietario = ()=> {
                         </div>
                         </div>
                     <div>
-                        <button className="group relative border w-1/2
+                        <button className="group relative border 
                         justify-center py-2 px-4 border-transparent
                         font-medium rounded-md bg-indigo-600 text-white
                         hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         // type="submit"
-                        onClick={ (e) => console.log(``) /* Banco no firebase */}>
-                            Cadastrar Proprietário
+                        >
+                            Cadastrar proprietario
                         </button>
                 </div>
             

@@ -2,23 +2,93 @@ import {PencilIcon, TrashIcon,MenuIcon} from '@heroicons/react/solid';
 import { useEffect, useState } from 'react';
 import {Sidebar} from "../components/Sidebar";
 import {onAuthStateChanged, signOut} from "firebase/auth"
-import {auth} from '../firebase-config';
+import {auth, db} from '../firebase-config';
+import { Link, useNavigate } from "react-router-dom";
+import { collection, getDocs, limit, query, where } from 'firebase/firestore';
+// import { useAsync } from 'react-async'; remover
+
 const ControleResenha = () => {
-    // const [isOpen, setIsOpen] = useState(false);
-    // const toggle = () => {
-    //     // alert(isOpen);
-    //     setIsOpen(!isOpen);
-    // };
+    auth
+    const [proprietarios, setproprietarios] = useState();
+    const [animais, setAnimais] = useState();
+    const [user, setUser] = useState('');
+    const [isLoading, setLoading] = useState(true);
+    
+    const navigate = useNavigate();
+    onAuthStateChanged(auth,(currentUser) => {
+        // console.log(auth)
+        if(!currentUser){
+            navigate('/',{replace: true})
+        }
+        else {
+            setUser(currentUser)
+        }
+        
+    })
+    // console.log(user);
     const LogOut = async() => {
         try {
-            if(auth.currentUser){
+            if(auth.currentUser){ // transformar usuario em estado
+                alert("alo")
                 await signOut(auth);
             }
         } catch (e) {
             console.log(e)
         }
     }
+    
+    // async function queryProps() {
+    //     // alert("alo");
+    //     const proprietariosRef = collection(db, "proprietarios");
+    //     const proprietariosQuery = query(
+    //         proprietariosRef,
+    //         where("vet", '==', `${auth.currentUser.uid}`),
+    //         limit(10));
+    //     const querySnapshot = await getDocs(proprietariosQuery);
+    //     var arr = []
+    //     const allDocs = querySnapshot.forEach((doc) => {
+    //         arr.push(doc.data().nome)
+    //         // console.debug(doc.data().nome)
+    //     })
+    //     return(arr);
+    //     console.debug(arr);
+    // };
 
+    const proprietariosRef = collection(db, "proprietarios");
+    const proprietariosQuery = query(
+        proprietariosRef,
+        where("vet", '==', `${auth.currentUser?.uid}`),
+        limit(10));
+    const animaisRef = collection(db, "animais");
+    const animaisQuery = query(
+        animaisRef,
+        where("vet", '==', `${auth.currentUser?.uid}`),
+        limit(10));
+    useEffect(() => {
+        const queryProps = async () => {
+            const querySnapshot = await getDocs(proprietariosQuery);
+            // console.log(querySnapshot.docs.map((doc) => ({ ...doc.data() })));
+            setproprietarios(querySnapshot.docs.map((doc) => ({ ...doc.data() })));
+
+            const animaisSnapShot = await getDocs(animaisQuery);
+            console.log(animaisSnapShot.docs.map((doc) => ({ ...doc.data() })));
+            setAnimais(animaisSnapShot.docs.map((doc) => ({ ...doc.data() })));
+            setLoading(false);
+            // console.log(querySnapshot.docs.map((doc) => ({...doc.data()})));
+        };
+        queryProps();
+
+    }, [])
+
+    useEffect(() => {
+    //   console.log(animais);
+    
+    })
+    
+
+    if(proprietarios=== undefined){
+        return <div className="App">Carregando...</div>;
+    }
     return (
         <div className="flex-col space-y-6"> 
             <header className="bg-indigo-600 h-12 indent-10
@@ -30,33 +100,39 @@ const ControleResenha = () => {
                     </span>
                 </div>
             </header>
-            <body className="space-y-6">
+            <section className="space-y-6">
             <a className="font-medium text-indigo-600 hover:text-indigo-500"
                 onClick={() => LogOut()}>
-                    {auth.currentUser.email} <br />
+                    {auth.currentUser?.email} <br />
                     log out
+                    <br />
+                    {/* {proprietarios[0]?.nome} */}
                 </a>
                 <div className="flex items-center justify-center space-x-4 px-1">
-                    <p className="w-20">Proprietário</p>
+                    <p className="w-20">Proprietário </p>
                     <select className="overflow-hidden w-80 border-0 rounded-md bg-gray-100">
-                        <option value="fruit">teste teste testeteste teste</option>
-                        <option value="vegetable">Vegetable</option>
-                        <option value="meat">Meat</option>
-                        <option value="vegetable">Vegetable</option>
-                        <option value="meat">Meat</option>
-                        <option value="vegetable">Vegetable</option>
-                        <option value="meat">Meat</option>
+                        {proprietarios?.map(proprietario => {
+                            return(
+                                <>
+                                <option key={proprietario.telefone} value={proprietario?.nome}>{proprietario?.nome}</option>
+                                </>
+                            )
+                        })}
+                        
     
                     </select>
                 </div>
                 <div className="flex items-center justify-center space-x-4 px-1">
                     <p className="w-20" >Nome do animal</p>
                     <select className="overflow-hidden w-80 border-0 rounded-md bg-gray-100">
-                        <option className="overflow-hidden" value="fruit">
-                            animalimal 
-                        </option>
-                        <option value="vegetable">Vegetable</option>
-                        <option value="meat">Meat</option>
+                       {animais?.map(animal => {
+                            return(
+                                <>
+                                <option key={animal.Nome} value={animal?.Nome}>{animal?.Nome}</option>
+                                </>
+                                
+                            )
+                        })}
                     </select>
                 </div>
                 {/* maybe this will break in big screens, fix it if u wanna */}
@@ -91,7 +167,7 @@ const ControleResenha = () => {
                                 <td className='border-2 border-black'>3</td>
                                 <td className='border-2 border-black'>4</td>
                                 <td className='border-2 border-black content-center px-1 w-2'>
-                                    <PencilIcon className='w-5 h-5' />
+                                    <PencilIcon className='w-5 h-5' onClick={() => {queryProps()}} />
                                 </td>
                                 <td className='border-2 border-black px-1 w-2' >
                                     <TrashIcon className='w-5 h-5'/>
@@ -102,7 +178,7 @@ const ControleResenha = () => {
                 </div>
 
                 {/*TODO: adicionar ul no restante da pagina */}
-            </body>
+            </section>
         </div>
     )
 }

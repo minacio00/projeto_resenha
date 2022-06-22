@@ -4,11 +4,14 @@ import { ArrowLeftIcon, MenuIcon, UserAddIcon, DocumentAddIcon,
 }
  from "@heroicons/react/solid";
 import { useNavigate,Link } from "react-router-dom";
+import {onAuthStateChanged, signOut} from "firebase/auth"
+import {auth} from '../firebase-config';
 
 
 export const Sidebar = () => {
    const navigate = useNavigate();
    const [hidden, setHidden] = useState(true)
+   const [user, setUser] = useState('');
    // // useEffect(() => {
    // //   setHidden(!isHidden)
    // // }, [isHidden])
@@ -36,6 +39,24 @@ export const Sidebar = () => {
         };
       }, [ref,hidden]);
     }
+   const LogOut = async () => {
+      try {
+         await signOut(auth);
+      } catch (e) {
+         console.log(e)
+      }
+   };
+   onAuthStateChanged(auth, (currentUser) => {
+      // console.log(auth)
+      if (!currentUser) {
+         navigate('/', { replace: true })
+      }
+      else {
+         setUser(currentUser)
+      }
+
+   })
+// co
 
     const wrapperRef = useRef(null);
     useOutsideAlerter(wrapperRef);
@@ -113,8 +134,8 @@ export const Sidebar = () => {
                      </div>
                      <div className="flex pb-4 hover:bg-gray-100">
                         <li className="mr-3 flex-1 text-left">
-                           <a href="/controle" className="block py-1 md:py-3 pl-1 align-middle text-grey-darkest no-underline "
-                           >
+                           <a className="block py-1 md:py-3 pl-1 align-middle text-grey-darkest no-underline "
+                           onClick={()=>{LogOut()}}>
                            <i className="fas fa-link pr-0 md:pr-3"></i>
                            <span className="pb-1 text-sm md:text-base text-grey-dark block">Sair </span>
                            

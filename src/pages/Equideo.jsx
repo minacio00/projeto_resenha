@@ -3,6 +3,8 @@ import { useEffect, useState, useReducer } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Cabeca } from "./Cabeca";
 import resize from "../helpers/resizeMap";
+import {auth, db} from '../firebase-config';
+import { addDoc, collection,doc } from "firebase/firestore";
 
 function useForceUpdate(){
     const [value, setValue] = useState(0); // integer state
@@ -42,6 +44,22 @@ const Equideo = ()=> {
         // setHiddenVisao(!hiddenVisao);
         // setHiddenForm(!hiddenForm);
     }
+    const saveAnimal = async (e) => {
+        e.preventDefault();
+        const animaisRef = collection(db, "animais");
+        const newDoc = await addDoc(animaisRef, {
+            Nome: nome,
+            Sexo: sexo,
+            Cor: cor,
+            Idade: idade,
+            Subcor: subcor,
+            Especie: especie,
+            Cidade: cidade,
+            Estado: estado,
+            vet: auth.currentUser.uid
+        });
+        navigate('/geral',{replace:false});
+    }
     
     return(
         <>
@@ -57,7 +75,7 @@ const Equideo = ()=> {
                     </div>
             </header>
             <body>
-                <form className="mt-8 space-y-6" method="post">
+                <form className="mt-8 space-y-6" onSubmit={(e)=>saveAnimal(e)}>
                     <input type="hidden" name="remember" defaultValue={true} />
                     <div className={` ${hiddenForm ? "hidden" : ' '} space-y-4 px-4`}>
                         <div>
@@ -70,7 +88,7 @@ const Equideo = ()=> {
                         <div className=
                             "rounded-md flex justify-between relative w-full px-3 py-2 border-b border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
                             <span className="text-gray-500 text-base">Sexo:</span>
-                            <div>
+                            <div className="space-x-1">
                                 <label >Macho</label>
                                 <input type="radio" 
                                 placeholder="macho"
@@ -79,7 +97,7 @@ const Equideo = ()=> {
                                 value={"macho"}
                                 onChange={ (e) => {setSexo(e.target.value); console.log(e.target.value)} }/>
                             </div>
-                            <div>
+                            <div className="space-x-1">
                                 <label >Fêmea</label>
                                 <input type="radio" 
                                 placeholder="femea"
@@ -106,15 +124,18 @@ const Equideo = ()=> {
                             type='especie'
                             onChange={ (e) => setBairro(e.target.value) }/>
                         </div>
-                        <div className="flex items-center justify-between max-w-screen-sm px-1 ">
-                            <p className="w-5">Cidade</p>
-                            <select className="overflow-hidden border-0 rounded-md bg-gray-100">
-                                <option value="azul">azul</option>
+                        <div className="items-center justify-between max-w-screen-sm px-1 ">
+                            <p className="py-2">Cidade</p>
+                            {/* talvez a linha abaixo só vá setar quando eu ativamente selecionar uma cidade, debugar isso */}
+                            <select className="overflow-hidden border-0 rounded-md bg-gray-100" onChange={(e)=>setCidade(e.target.value) }> 
+                                <option value="Anapolis">Anapolis</option>
+                                <option value="Belo Horizonte">Belo Horizonte</option>
                             </select>
 
-                            <p>Estado</p>
-                            <select className="overflow-hidden border-0 rounded-md bg-gray-100">
-                                <option value="azul">azul</option>
+                            <p className="py-2">Estado</p>
+                            <select className="overflow-hidden border-0 rounded-md bg-gray-100" onChange={(e)=>setEstado(e.target.value)}>
+                                <option value="Goiás">Goiás</option>
+                                <option value="Minas Gerais">Minas Gerais</option>
                             </select>
                         </div>
                         
@@ -137,7 +158,7 @@ const Equideo = ()=> {
                         font-medium rounded-md bg-indigo-600 text-white
                         hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         // type="submit"
-                        onClick={ (e) => saveForm(e) /* Banco no firebase */}>
+                        >
                            Cadastrar animal
                         </button>
                     </div>
