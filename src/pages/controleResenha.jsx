@@ -57,7 +57,7 @@ const ControleResenha = () => {
     const proprietariosRef = collection(db, "proprietarios");
     const proprietariosQuery = query(
         proprietariosRef,
-        where("vet", '==', `${auth.currentUser?.uid}`),
+        where("vet", '==', `$ {auth.currentUser?.uid}`),
         limit(10));
     const animaisRef = collection(db, "animais");
     const animaisQuery = query(

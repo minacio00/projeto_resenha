@@ -1,6 +1,7 @@
 import { ArrowLeftIcon, PlusIcon, TrashIcon } from "@heroicons/react/solid"
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Box, Modal } from "@mui/material";
 // https://stackoverflow.com/questions/52129967/react-to-mouse-click-event-on-image-at-certain-coordinates/52130230
 // ^ talvez me permita saber as coordenadas onde o clique ocorreu na imagem, se isso estiver correto, é possível resolver o pocisionamento da marca
 // somente, verificar se a pos na imagem está correta.
@@ -8,9 +9,26 @@ import { Link, useNavigate } from "react-router-dom";
 // eu sei o quanto a imagem está descolada da borda da tela, calcular offset ? 
 export const VisaoGeral = () => {
     const navigate = useNavigate();
-    const [mark, setmark] = useState({x: 0,y: 0})
+    const [mark, setmark] = useState({ x: 0, y: 0 })
+    // const [markDimensions, setMarkDimensions] = useState(initialMark());
+    const [markSource, setMarkSource] = useState("marcas/ladre1.png")
+    const [open, setOpen] = useState(false);
 
-    function clickVisaoGeral(e){
+    const handleChange = (event) => {
+        setMarkSource(event.target.value);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    function initialMark() {
+        const imgElement = document.getElementById("marca")
+        const markImageWidth = imgElement.offsetWidth;
+        const markImageHeight = imgElement.offsetHeight;
+        return {x: markImageWidth, y: markImageHeight}
+    }
+    function clickVisaoGeral(e) {
         e.preventDefault();
         e.className
         alert(e.currentTarget.parentElement.name);
@@ -44,21 +62,21 @@ export const VisaoGeral = () => {
     // }
     // const coords = document.getElementsByTagName('area');
     const coords = ["353,212,369,276,375,319,370,325,369,336,371,357,384,370,415,371,427,362,430,353,432,340,431,328,426,321,429,297,441,242,448,209,446,191,437,177,437,164,443,137,439,114,435,110,431,113,430,119,424,130,422,140,421,150,409,140,394,139,381,149,381,139,372,114,371,110,367,110,361,125,361,137,365,163,365,176,353,197,353,207",
-    "61,87,73,85,88,83,105,84,118,85,139,89,154,93,169,93,183,93,193,90,199,87,209,85,220,85,230,82,240,73,263,59,281,49,297,44,318,36,322,26,329,18,329,24,340,17,340,33,347,42,376,70,388,82,389,96,383,100,381,103,371,103,364,98,363,95,352,91,346,91,339,88,333,88,326,87,315,88,309,91,304,98,304,103,298,109,291,116,285,125,283,131,275,154,273,164,270,171,264,177,260,183,259,194,257,204,254,213,254,279,254,283,267,309,248,310,244,306,239,302,218,302,218,288,209,280,207,276,203,198,199,191,147,182,117,171,105,165,92,177,81,202,65,229,60,254,61,270,66,280,68,286,72,294,73,301,47,301,48,315,26,316,25,309,24,295,18,286,18,278,21,275,21,248,18,239,17,223,17,220,12,218,12,186,17,139,23,119,45,95,60,87",
-    "409,80,417,74,450,42,454,33,456,33,457,15,467,21,468,15,479,28,480,34,501,41,522,50,559,70,565,78,578,84,594,84,602,88,620,93,644,92,661,88,693,83,731,85,754,97,765,110,776,127,780,153,782,189,786,217,779,220,779,228,778,240,776,246,776,262,773,275,778,279,778,283,775,287,771,296,771,302,771,307,769,312,771,314,750,316,749,308,749,303,745,301,727,301,723,295,729,288,736,271,738,245,734,233,726,214,716,199,708,175,692,163,653,179,623,185,597,190,593,196,588,274,588,277,578,287,578,299,578,302,557,301,552,301,552,306,549,308,531,307,544,282,544,216,539,198,538,183,526,167,517,134,505,114,496,104,491,91,476,85,459,87,438,91,426,102,414,102,408,96,407,82,410,79",
-    "277,479,277,455,275,446,283,400,291,383,299,374,304,340,306,283,302,270,303,250,312,220,312,206,321,196,332,201,334,230,339,252,341,265,334,287,338,335,343,371,353,390,360,405,362,427,365,434,366,443,363,452,363,476,363,479,315,479,277,478,278,478,279,478,278,478",
-    "89,341,180,342,180,352,169,387,164,406,170,416,170,427,162,440,163,468,165,480,161,485,161,490,167,495,167,504,167,506,161,509,147,507,145,506,143,498,154,488,151,481,154,469,154,439,151,428,150,420,149,413,153,406,153,400,151,388,148,379,146,364,135,353,121,367,121,384,116,395,117,406,121,422,115,436,117,472,118,489,123,498,123,498,122,506,110,509,99,507,99,495,106,489,103,482,104,470,105,440,97,419,103,407,103,395,94,367,91,342",
-    "436,455,435,413,449,393,449,389,462,391,486,392,499,389,499,396,516,423,512,440,513,457,505,464,491,484,472,491,454,481,444,464,436,459,435,456",
-    "620,347,630,398,629,421,637,446,639,469,636,473,636,487,628,503,628,507,654,507,655,501,651,490,648,489,652,477,647,470,648,445,653,429,653,411,648,401,652,365,666,354,669,346,673,346,675,355,688,366,692,397,688,412,687,425,691,438,693,471,690,474,692,488,686,498,686,506,711,507,711,496,703,490,704,474,701,468,700,442,710,426,707,399,716,380,717,362,722,343,619,346,619,347"]
+        "61,87,73,85,88,83,105,84,118,85,139,89,154,93,169,93,183,93,193,90,199,87,209,85,220,85,230,82,240,73,263,59,281,49,297,44,318,36,322,26,329,18,329,24,340,17,340,33,347,42,376,70,388,82,389,96,383,100,381,103,371,103,364,98,363,95,352,91,346,91,339,88,333,88,326,87,315,88,309,91,304,98,304,103,298,109,291,116,285,125,283,131,275,154,273,164,270,171,264,177,260,183,259,194,257,204,254,213,254,279,254,283,267,309,248,310,244,306,239,302,218,302,218,288,209,280,207,276,203,198,199,191,147,182,117,171,105,165,92,177,81,202,65,229,60,254,61,270,66,280,68,286,72,294,73,301,47,301,48,315,26,316,25,309,24,295,18,286,18,278,21,275,21,248,18,239,17,223,17,220,12,218,12,186,17,139,23,119,45,95,60,87",
+        "409,80,417,74,450,42,454,33,456,33,457,15,467,21,468,15,479,28,480,34,501,41,522,50,559,70,565,78,578,84,594,84,602,88,620,93,644,92,661,88,693,83,731,85,754,97,765,110,776,127,780,153,782,189,786,217,779,220,779,228,778,240,776,246,776,262,773,275,778,279,778,283,775,287,771,296,771,302,771,307,769,312,771,314,750,316,749,308,749,303,745,301,727,301,723,295,729,288,736,271,738,245,734,233,726,214,716,199,708,175,692,163,653,179,623,185,597,190,593,196,588,274,588,277,578,287,578,299,578,302,557,301,552,301,552,306,549,308,531,307,544,282,544,216,539,198,538,183,526,167,517,134,505,114,496,104,491,91,476,85,459,87,438,91,426,102,414,102,408,96,407,82,410,79",
+        "277,479,277,455,275,446,283,400,291,383,299,374,304,340,306,283,302,270,303,250,312,220,312,206,321,196,332,201,334,230,339,252,341,265,334,287,338,335,343,371,353,390,360,405,362,427,365,434,366,443,363,452,363,476,363,479,315,479,277,478,278,478,279,478,278,478",
+        "89,341,180,342,180,352,169,387,164,406,170,416,170,427,162,440,163,468,165,480,161,485,161,490,167,495,167,504,167,506,161,509,147,507,145,506,143,498,154,488,151,481,154,469,154,439,151,428,150,420,149,413,153,406,153,400,151,388,148,379,146,364,135,353,121,367,121,384,116,395,117,406,121,422,115,436,117,472,118,489,123,498,123,498,122,506,110,509,99,507,99,495,106,489,103,482,104,470,105,440,97,419,103,407,103,395,94,367,91,342",
+        "436,455,435,413,449,393,449,389,462,391,486,392,499,389,499,396,516,423,512,440,513,457,505,464,491,484,472,491,454,481,444,464,436,459,435,456",
+        "620,347,630,398,629,421,637,446,639,469,636,473,636,487,628,503,628,507,654,507,655,501,651,490,648,489,652,477,647,470,648,445,653,429,653,411,648,401,652,365,666,354,669,346,673,346,675,355,688,366,692,397,688,412,687,425,691,438,693,471,690,474,692,488,686,498,686,506,711,507,711,496,703,490,704,474,701,468,700,442,710,426,707,399,716,380,717,362,722,343,619,346,619,347"]
     var length = coords.length;
     for (var n = 0; n < length; n++) {
         coords[n] = coords[n].split(',');
     }
     // coords = coords.split(',');
-    var  x = document.body.clientWidth / 800;
+    var x = document.body.clientWidth / 800;
     var clen = coords.length;
     // console.log(clen)
-    for(var n = 0; n<length; n++){
+    for (var n = 0; n < length; n++) {
         clen = coords[n].length;
         for (var m = 0; m < clen; m++) {
             coords[n][m] *= x;
@@ -67,60 +85,94 @@ export const VisaoGeral = () => {
     }
 
     function FindPosition(oElement) {
-            if(typeof( oElement.offsetParent ) !== "undefined")
-            {
-                for(var posX = 0, posY = 0; oElement; oElement = oElement.offsetParent)
-                {
-                    posX += oElement.offsetLeft;
-                    posY += oElement.offsetTop;
-                }
-                console.log([ posX, posY ], "img tag");
-                return [ posX, posY ];
+        if (typeof (oElement.offsetParent) !== "undefined") {
+            for (var posX = 0, posY = 0; oElement; oElement = oElement.offsetParent) {
+                posX += oElement.offsetLeft;
+                posY += oElement.offsetTop;
             }
-            else
-            {
-                return [ oElement.x, oElement.y ];
-            }
+            console.log([posX, posY], "img tag");
+            return [posX, posY];
         }
+        else {
+            return [oElement.x, oElement.y];
+        }
+    }
 
-        function GetCoordinates(e)
-        {
-            var PosX = 0;
-            var PosY = 0;
-            var ImgPos;
-            var myImg = document.getElementById("cavalo");
-            // debugger
-            ImgPos = FindPosition(myImg);
-            if (!e) var e = window.event;
-            if (e.pageX || e.pageY)
-            {
-                PosX = e.pageX;
-                PosY = e.pageY;
-            }
-            else if (e.clientX || e.clientY)
-            {
-                PosX = e.clientX + document.body.scrollLeft
-                    + document.documentElement.scrollLeft;
-                PosY = e.clientY + document.body.scrollTop
-                    + document.documentElement.scrollTop;
-            }
-            PosX = PosX - ImgPos[0];
-            PosY = PosY - ImgPos[1];
-            return({PosX: PosX,PosY: PosY});
+    function GetCoordinates(e) {
+        var PosX = 0;
+        var PosY = 0;
+        var ImgPos;
+        var myImg = document.getElementById("cavalo");
+        // debugger
+        ImgPos = FindPosition(myImg);
+        if (!e) var e = window.event;
+        if (e.pageX || e.pageY) {
+            PosX = e.pageX;
+            PosY = e.pageY;
         }
+        else if (e.clientX || e.clientY) {
+            PosX = e.clientX + document.body.scrollLeft
+                + document.documentElement.scrollLeft;
+            PosY = e.clientY + document.body.scrollTop
+                + document.documentElement.scrollTop;
+        }
+        PosX = PosX - ImgPos[0];
+        PosY = PosY - ImgPos[1];
+        return ({ PosX: PosX, PosY: PosY });
+    }
     const handleMouseDown = (e) => {
         // const {PosX,PosY} = GetCoordinates(e)
         // console.log(PosX, PosY);
         // const{offsetX, offsetY} = e.nativeEvent;
+        // alert("x:"+offsetX+" y:"+offsetY);
         console.log(e)
-        setmark({x: e.pageX, y: e.pageY});
-        alert("x:"+offsetX+" y:"+offsetY);
+        const imgElement = document.getElementById("marca")
+        const visaoGeralImg = document.getElementById("cavalo")
+        const markImageWidth = imgElement.offsetWidth;
+        const markImageHeight = imgElement.offsetHeight;
+
+        
+
+        const originalWidth = 800; // Substitua pela largura original da imagem maior
+        const originalHeight = 561; //
+        // const markImageWidth = 30; // Substitua pelo valor real
+        // const markImageHeight = 22; // Substitua pelo valor real
+
+        const scaleWidth = visaoGeralImg.clientWidth / originalWidth;
+        const scaleHeight = visaoGeralImg.clientHeight / originalHeight;
+    
+        //passar esses dois para markDimensions
+        const scaledMarkWidth = markImageWidth * scaleWidth;
+        const scaledMarkHeight = markImageHeight * scaleHeight;
+        // setMarkDimensions({x: scaledMarkWidth, y: scaledMarkHeight})
+
+        const x = e.pageX - markImageWidth / 2;
+        const y = e.pageY - markImageHeight / 2;
+        setmark({ x: x, y: y });
+        // setmark({x: e.pageX, y: e.pageY});
         // console.debug(e, "onde a marca deveria estar")
     }
     useEffect(() => {
+        
     }, [mark])
-    
-    return(
+    // useEffect(() => {
+        
+    //     const imgElement = document.getElementById("marca")
+    //     const visaoGeralImg = document.getElementById("cavalo")
+    //     const markImageWidth = imgElement.offsetWidth;
+    //     const markImageHeight = imgElement.offsetHeight;
+    //     const originalWidth = 800; // Substitua pela largura original da imagem maior
+    //     const originalHeight = 561; //
+       
+    //     const scaleWidth = visaoGeralImg.clientWidth / originalWidth;
+    //     const scaleHeight = visaoGeralImg.clientHeight / originalHeight;
+    //     const scaledMarkWidth = markImageWidth * scaleWidth;
+    //     const scaledMarkHeight = markImageHeight * scaleHeight;
+    //     console.log("valores das dimensoes: ", {x: scaledMarkWidth, y: scaledMarkHeight});
+    //     setMarkDimensions({x: scaledMarkWidth, y: scaledMarkHeight})
+    // },[])
+
+    return (
         <>
             <header className=" flex-col space-y-6 bg-indigo-600 h-12 indent-10
                 text-white font-bold text-left">
@@ -131,16 +183,16 @@ export const VisaoGeral = () => {
                     <span className='p-3' >
                         Dados do equídeo
                     </span>
-                </div>
+                </div> 
             </header>
             <div className={` ${false ? "hidden" : ' '}`}>
                 <h1>Escolha uma região para fazer as marcações:  x = {mark.x} </h1>
-                <img id="cavalo" src="visao_geral.png" alt="visaoGeral" useMap="#map_ID" width="100%" height="561" onClick={(e)=> {handleMouseDown(e)}} />
-                <img className={`absolute top-[${mark.y +'px'}]`} src="marca.png" alt="marca" style={{left:mark.x +'px', top: mark.y +'px'}} />
+                <img id="cavalo" src="visao_geral.png" alt="visaoGeral" useMap="#map_ID" width="100%" height="561" onClick={(e) => { handleMouseDown(e) }} />
+                <img id="marca" className={`absolute top-[${mark.y + 'px'}]`} src="marcas/filete.png" alt="marca" style={{ left: mark.x + 'px', top: mark.y + 'px'}} />
                 <map name="map_ID1">
                     <area shape="poly" onClick={() => { navigate('/cabeca', { replace: false }) }} coords={coords[0]} /* href="detalhesCabeca" */ />
                     <area shape="poly" onClick={() => { navigate('/direito', { replace: false }) }} coords={coords[1]}  /* href="ladoDireito" */ />
-                    <area shape="poly" onClick={() => { navigate('/esquerdo', { replace: false }) }} coords={coords[2]} /* href="ladoEsquerdo" *//>
+                    <area shape="poly" onClick={() => { navigate('/esquerdo', { replace: false }) }} coords={coords[2]} /* href="ladoEsquerdo" */ />
                     <area shape="poly" onClick={() => { navigate('/pescoco', { replace: false }) }} coords={coords[3]} /* href="pescocoVistaInferior"/**/ />
                     <area shape="poly" onClick={() => { navigate('/anteriores', { replace: false }) }} coords={coords[4]}/*  href="membrosAnteriores" */ />
                     <area shape="poly" onClick={() => { navigate('/focinho', { replace: false }) }} coords={coords[5]} /*  href="focinho" */ />
@@ -151,32 +203,31 @@ export const VisaoGeral = () => {
             <div>
                 <div className="flex items-center justify-between">
                     <h1 className="text-left text-lg p-4">Descrição do animal</h1>
-                    <PlusIcon className="w-5 h-5 m-4" onClick={() => console.log("mais")} />
+                    <PlusIcon className="w-5 h-5 m-4" onClick={() => setOpen(true)} />
                 </div>
-                <table className="table-auto border border-black w-full text-xs">
-                    <thead>
-                        <tr className="bg-indigo-400">
-                            <th className="border-2 border-black">Local</th>
-                            <th className="border-2 border-black shrink">Marca</th>
-                            <th className="border-2 border-black" >R. zootécnica</th>
-                            <th className="border-2 border-black">Excluir</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className='border-2 border-black'>1</td>
-                            <td className='border-2 border-black'>2</td>
-                            <td className='border-2 border-black'>3</td>
-                            <td className='border-2 border-black px-1 w-2' >
-                                <TrashIcon className='w-5 h-5' />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                {open && (
+                      <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
+                      <div className="bg-white rounded-lg shadow-xl p-6 m-4 max-w-xs max-h-full text-center">
+                          <div className="mb-4">
+                              <label className="block text-gray-700 text-sm font-bold mb-2">Escolha uma marca:</label>
+                              <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={mark} onChange={handleChange}>
+                                  <option value={'marcas/ladre1.png'}>ladre-1</option>
+                                  <option value={'marcas/Estrela.png'}>Estrela</option>
+                                  <option value={'marcas/Redemoinho.png'}>Redemoinho</option>
+                              </select>
+                          </div>
+                          <div className="flex-col space-y-4">
+                              <button className="w-full py-2 text-center text-white rounded-lg bg-indigo-600 hover:bg-indigo-700 focus:outline-none" onClick={handleClose}>Selecionar</button>
+                              <button className="w-full py-2 text-center text-white rounded-lg bg-red-600 hover:bg-red-800 focus:outline-none" onClick={handleClose}>Fechar</button>
+                          </div>
+                      </div>
+                  </div>
+                )}
+                <textarea
+                    className="border rounded-md p-2 w-full h-20 resize-none focus:outline-none"
+                    placeholder="Adicione uma descrição..."
+                />
             </div>
-            </>
+        </>
     )
-
-
-
 }
