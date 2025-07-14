@@ -15,17 +15,50 @@ const ControleResenha = () => {
     const [isLoading, setLoading] = useState(true);
     
     const navigate = useNavigate();
-    onAuthStateChanged(auth,(currentUser) => {
-        // console.log(auth)
-        if(!currentUser){
-            navigate('/',{replace: true})
-        }
-        else {
-            setUser(currentUser)
-        }
-        
-    })
-    // console.log(user);
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if (!currentUser) {
+                navigate('/', { replace: true });
+            } else {
+                setUser(currentUser);
+            }
+        });
+        return () => unsubscribe();
+    }, [navigate]);
+
+    // Buscar dados só quando user estiver pronto
+    useEffect(() => {
+        if (!user) return;
+
+        const fetchData = async () => {
+            setLoading(true);
+
+            const proprietariosRef = collection(db, "proprietarios");
+            const proprietariosQuery = query(
+                proprietariosRef,
+                where("vet", '==', user.uid),
+                limit(10)
+            );
+            const animaisRef = collection(db, "animais");
+            const animaisQuery = query(
+                animaisRef,
+                where("vet", '==', user.uid),
+                limit(10)
+            );
+
+            const [proprietariosSnap, animaisSnap] = await Promise.all([
+                getDocs(proprietariosQuery),
+                getDocs(animaisQuery)
+            ]);
+
+            setProprietarios(proprietariosSnap.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+            setAnimais(animaisSnap.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+            setLoading(false);
+        };
+
+        fetchData();
+    }, [user]);
+    
     const LogOut = async() => {
         try {
             if(auth.currentUser){ // transformar usuario em estado
@@ -36,54 +69,6 @@ const ControleResenha = () => {
             console.log(e)
         }
     }
-    
-    // async function queryProps() {
-    //     // alert("alo");
-    //     const proprietariosRef = collection(db, "proprietarios");
-    //     const proprietariosQuery = query(
-    //         proprietariosRef,
-    //         where("vet", '==', `${auth.currentUser.uid}`),
-    //         limit(10));
-    //     const querySnapshot = await getDocs(proprietariosQuery);
-    //     var arr = []
-    //     const allDocs = querySnapshot.forEach((doc) => {
-    //         arr.push(doc.data().nome)
-    //         // console.debug(doc.data().nome)
-    //     })
-    //     return(arr);
-    //     console.debug(arr);
-    // };
-
-    const proprietariosRef = collection(db, "proprietarios");
-    const proprietariosQuery = query(
-        proprietariosRef,
-        where("vet", '==', `$ {auth.currentUser?.uid}`),
-        limit(10));
-    const animaisRef = collection(db, "animais");
-    const animaisQuery = query(
-        animaisRef,
-        where("vet", '==', `${auth.currentUser?.uid}`),
-        limit(10));
-    useEffect(() => {
-        const queryProps = async () => {
-            const querySnapshot = await getDocs(proprietariosQuery);
-            // console.log(querySnapshot.docs.map((doc) => ({ ...doc.data() })));
-            setproprietarios(querySnapshot.docs.map((doc) => ({ ...doc.data() })));
-
-            const animaisSnapShot = await getDocs(animaisQuery);
-            console.log(animaisSnapShot.docs.map((doc) => ({ ...doc.data() })));
-            setAnimais(animaisSnapShot.docs.map((doc) => ({ ...doc.data() })));
-            setLoading(false);
-            // console.log(querySnapshot.docs.map((doc) => ({...doc.data()})));
-        };
-        queryProps();
-
-    }, [])
-
-    useEffect(() => {
-    //   console.log(animais);
-    
-    })
     
 
     if(proprietarios=== undefined){
